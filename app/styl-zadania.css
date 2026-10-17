@@ -1,0 +1,311 @@
+/* ===== Historia z Mikołajem – sesja i typy zadań ===== */
+
+.sesja { display: flex; flex-direction: column; gap: 14px; padding-top: 8px; padding-bottom: 120px; }
+.sesja-gora { display: flex; align-items: center; gap: 10px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--tlo); padding: 8px 0; }
+.kroki { flex: 1; display: flex; gap: 4px; }
+.kroki span { flex: 1; height: 10px; border-radius: 5px; background: var(--tlo-2); transition: background .3s; }
+.kroki span.teraz { background: var(--lapis-tlo); box-shadow: inset 0 0 0 2px var(--lapis); }
+.kroki span.ok { background: var(--ok); }
+.kroki span.zle { background: var(--zle); }
+.kroki span.pol { background: var(--braz); }
+.combo { display: flex; align-items: center; gap: 2px; font: 800 18px/1 var(--font-tytul); color: var(--braz); min-width: 52px; justify-content: flex-end; }
+.combo svg { width: 22px; height: 22px; }
+.combo.skok { animation: skok .4s ease; }
+@keyframes skok { 40% { transform: scale(1.35); } }
+
+.zadanie { background: var(--karta); border-radius: var(--r-duzy); box-shadow: var(--cien); padding: 20px; display: grid; gap: 16px; animation: wejscie .25s ease-out; }
+.zadanie-gora { display: flex; align-items: flex-start; gap: 10px; }
+.zadanie-gora > div { flex: 1; min-width: 0; display: grid; gap: 6px; }
+.polecenie { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--tusz-2); }
+.pytanie { font: 700 24px/1.25 var(--font-tytul); }
+.temat-chip { font-size: 12px; color: var(--tusz-3); }
+
+/* ----- wybór ABCD, intruz ----- */
+.opcje { display: grid; gap: 10px; }
+.opcje-2 { grid-template-columns: repeat(2, 1fr); }
+.opcja {
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+  min-height: 60px; padding: 10px 10px 10px 12px; border: 0; border-radius: var(--r);
+  background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); cursor: pointer;
+  transition: background .15s, box-shadow .15s, transform .08s;
+}
+.opcja:active { transform: scale(.985); }
+.opcja-litera {
+  width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center;
+  font: 800 17px/1 var(--font-tytul); background: var(--lapis-tlo); color: var(--lapis);
+}
+.opcja-tekst { flex: 1; min-width: 0; }
+.opcja .glosnik { flex: none; }
+.opcja.wybrana { box-shadow: inset 0 0 0 3px var(--lapis); background: var(--lapis-tlo); }
+.opcja.dobra { box-shadow: inset 0 0 0 3px var(--ok); background: var(--ok-tlo); }
+.opcja.dobra .opcja-litera { background: var(--ok); color: #fff; }
+.opcja.zla { box-shadow: inset 0 0 0 3px var(--zle); background: var(--zle-tlo); }
+.opcja.zla .opcja-litera { background: var(--zle); color: #fff; }
+.opcja.wygaszona { opacity: .55; }
+.zablokowane .opcja, .zablokowane button { pointer-events: none; }
+.zablokowane .glosnik { pointer-events: auto; }
+
+/* ----- prawda / fałsz ----- */
+.pf-lista { display: grid; gap: 10px; }
+.pf-zdanie { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 12px; border-radius: var(--r); background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); }
+.pf-zdanie.dobra { box-shadow: inset 0 0 0 3px var(--ok); background: var(--ok-tlo); }
+.pf-zdanie.zla { box-shadow: inset 0 0 0 3px var(--zle); background: var(--zle-tlo); }
+.pf-przyciski { display: flex; gap: 8px; }
+.pf-btn { width: 56px; height: 52px; border: 0; border-radius: 12px; font: 800 20px/1 var(--font-tytul); background: var(--karta); box-shadow: inset 0 0 0 2px var(--linia); cursor: pointer; }
+.pf-btn.wybrana { background: var(--lapis); color: var(--na-lapis); box-shadow: none; }
+.pf-uwaga { grid-column: 1 / -1; font-size: 14px; color: var(--tusz-2); }
+
+/* ----- klocki (pary, kolejność, kategorie, luki, oś) ----- */
+.klocek {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 50px; padding: 8px 14px;
+  border: 0; border-radius: 12px; background: var(--karta); color: var(--tusz);
+  box-shadow: inset 0 0 0 2px var(--linia), 0 2px 0 var(--linia); cursor: pointer; text-align: left;
+  transition: transform .1s, box-shadow .15s, background .15s;
+}
+.klocek.aktywny { box-shadow: inset 0 0 0 3px var(--lapis), 0 4px 10px rgba(35, 82, 168, .25); background: var(--lapis-tlo); transform: translateY(-2px); }
+.klocek.dobra { box-shadow: inset 0 0 0 3px var(--ok); background: var(--ok-tlo); }
+.klocek.zla { box-shadow: inset 0 0 0 3px var(--zle); background: var(--zle-tlo); }
+.zasobnik { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-radius: var(--r); background: var(--tlo-2); min-height: 74px; align-content: flex-start; }
+.zasobnik:empty::after { content: "Wszystko ułożone"; color: var(--tusz-3); font-size: 14px; align-self: center; }
+.wskazowka { font-size: 14px; color: var(--tusz-2); }
+
+/* pary */
+.pary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+.pary-kol { display: grid; gap: 10px; align-content: start; }
+.pary-kol h3 { font-size: 14px; font-family: var(--font-tekst); font-weight: 600; color: var(--tusz-2); letter-spacing: .04em; text-transform: uppercase; }
+.pary .klocek { width: 100%; min-height: 58px; }
+.klocek[data-para] { box-shadow: inset 0 0 0 3px var(--kolor-pary), 0 2px 0 var(--linia); }
+.klocek[data-para]::before { content: attr(data-para); font: 800 14px/1 var(--font-tytul); color: var(--kolor-pary); }
+
+/* kolejność */
+.miejsca { display: grid; gap: 8px; counter-reset: miejsce; }
+.miejsce { display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 6px; border-radius: var(--r); background: var(--karta-2); border: 2px dashed var(--linia); }
+.miejsce::before { counter-increment: miejsce; content: counter(miejsce); width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center; font: 800 17px/1 var(--font-tytul); background: var(--lapis-tlo); color: var(--lapis); }
+.miejsce .klocek { flex: 1; }
+
+/* kategorie */
+.kolumny { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.kolumna { display: grid; gap: 8px; align-content: start; min-height: 140px; padding: 10px; border-radius: var(--r); background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); cursor: pointer; }
+.kolumna.cel { box-shadow: inset 0 0 0 3px var(--lapis); background: var(--lapis-tlo); }
+.kolumna h3 { font-size: 17px; text-align: center; padding: 4px 0 6px; border-bottom: 2px solid var(--linia); }
+.kolumna .klocek { width: 100%; }
+
+/* luki i nawiasy */
+.tekst-luki { font-size: 20px; line-height: 2.3; }
+.luka {
+  display: inline-flex; align-items: center; min-width: 110px; min-height: 44px; margin: 0 2px; padding: 2px 12px;
+  border: 0; border-radius: 10px; vertical-align: middle; cursor: pointer;
+  background: var(--karta-2); box-shadow: inset 0 -3px 0 var(--lapis), inset 0 0 0 2px var(--linia);
+  font: 600 18px/1.2 var(--font-tekst); color: var(--tusz);
+}
+.luka.cel { background: var(--lapis-tlo); }
+.luka.dobra { background: var(--ok-tlo); box-shadow: inset 0 0 0 3px var(--ok); }
+.luka.zla { background: var(--zle-tlo); box-shadow: inset 0 0 0 3px var(--zle); }
+.nawias { display: inline-flex; gap: 4px; padding: 2px; border-radius: 12px; background: var(--tlo-2); vertical-align: middle; margin: 0 2px; }
+.nawias button { min-height: 42px; padding: 2px 12px; border: 0; border-radius: 10px; background: transparent; font: 500 18px/1.2 var(--font-tekst); color: var(--tusz); cursor: pointer; }
+.nawias button.wybrana { background: var(--lapis); color: var(--na-lapis); }
+.nawias button.dobra { background: var(--ok); color: #fff; }
+.nawias button.zla { background: var(--zle); color: #fff; }
+.poprawka { display: inline-block; font-size: 14px; font-weight: 600; color: var(--ok); margin-left: 4px; }
+
+/* liczenie */
+.liczenie { display: grid; gap: 12px; justify-items: center; }
+.wyswietlacz { font: 800 40px/1 var(--font-tytul); min-width: 220px; padding: 14px 20px; border-radius: var(--r); background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); text-align: right; font-variant-numeric: tabular-nums; }
+.wyswietlacz.dobra { box-shadow: inset 0 0 0 3px var(--ok); background: var(--ok-tlo); }
+.wyswietlacz.zla { box-shadow: inset 0 0 0 3px var(--zle); background: var(--zle-tlo); }
+.klawiatura { display: grid; grid-template-columns: repeat(3, 72px); gap: 8px; }
+.klawiatura button { height: 60px; border: 0; border-radius: 12px; background: var(--karta); box-shadow: inset 0 0 0 2px var(--linia), 0 2px 0 var(--linia); font: 700 24px/1 var(--font-tytul); cursor: pointer; }
+.klawiatura button:active { transform: translateY(2px); box-shadow: inset 0 0 0 2px var(--linia); }
+
+/* oś czasu */
+.os-wrap { overflow-x: auto; padding-bottom: 6px; }
+.os { position: relative; min-width: 560px; height: 250px; }
+.os-linia { position: absolute; left: 2%; right: 2%; top: 150px; height: 6px; border-radius: 3px; background: var(--tusz-2); }
+.os-linia::after { content: ""; position: absolute; right: -14px; top: -7px; border: 10px solid transparent; border-left: 14px solid var(--tusz-2); }
+.os-slot { position: absolute; top: 20px; transform: translateX(-50%); width: 132px; display: grid; justify-items: center; gap: 6px; }
+.os-miejsce {
+  width: 100%; min-height: 86px; padding: 6px; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); font-size: 14px; line-height: 1.25; color: var(--tusz);
+  display: grid; place-items: center; text-align: center;
+}
+.os-miejsce.cel { background: var(--lapis-tlo); box-shadow: inset 0 0 0 3px var(--lapis); }
+.os-miejsce.pelne { background: var(--karta); box-shadow: inset 0 0 0 2px var(--lapis); font-weight: 600; }
+.os-miejsce.dobra { background: var(--ok-tlo); box-shadow: inset 0 0 0 3px var(--ok); }
+.os-miejsce.zla { background: var(--zle-tlo); box-shadow: inset 0 0 0 3px var(--zle); }
+.os-kreska { width: 4px; height: 26px; background: var(--tusz-2); border-radius: 2px; }
+.os-data { font: 700 15px/1.2 var(--font-tytul); text-align: center; color: var(--tusz); margin-top: 18px; }
+.os-era { position: absolute; top: 212px; font-size: 12px; color: var(--tusz-3); letter-spacing: .06em; text-transform: uppercase; }
+
+/* mapa */
+.mapa-wrap { overflow-x: auto; border-radius: var(--r); background: var(--lapis-tlo); }
+svg.mapa { display: block; width: 100%; min-width: 620px; height: auto; }
+.mapa .morze { fill: var(--lapis-tlo); }
+.mapa .lad { fill: var(--karta); stroke: var(--tusz-3); stroke-width: 1; }
+.mapa .lad-klik { cursor: pointer; transition: fill .15s; }
+.mapa .lad-klik:hover, .mapa .lad-klik.wybrany { fill: var(--braz-tlo); }
+.mapa .lad-klik.dobry { fill: var(--ok-tlo); stroke: var(--ok); stroke-width: 2.5; }
+.mapa .lad-klik.zly { fill: var(--zle-tlo); stroke: var(--zle); stroke-width: 2.5; }
+.mapa .start { fill: #6FB26F; opacity: .55; }
+.mapa .strzalka { fill: none; stroke: var(--zle); stroke-width: 2.2; stroke-linecap: round; }
+.mapa .grot { fill: var(--zle); }
+.mapa .punkt { fill: var(--zle); }
+.mapa .etykieta { font: 700 13px/1 var(--font-tekst); fill: var(--tusz); paint-order: stroke; stroke: var(--karta); stroke-width: 4px; stroke-linejoin: round; }
+.mapa .ocean { font: 500 12px/1 var(--font-tekst); fill: var(--lapis); letter-spacing: .1em; font-style: italic; }
+.mapa-legenda { font-size: 13px; color: var(--tusz-2); }
+.mapa-legenda.lista { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.mapa-legenda .leg { display: inline-flex; align-items: center; gap: 6px; }
+.mapa-znak { width: 24px; height: 16px; flex: none; }
+
+/* mapa Bliskiego Wschodu (podkład „wschod”) */
+.mapa-wschod .wl-lad { fill: var(--mapa-lad); }
+.mapa-wschod .wl-znak-ramka { stroke: var(--tusz-3); stroke-width: 1; }
+.mapa-wschod .wl-morze { fill: var(--lapis-tlo); stroke: var(--mapa-brzeg); stroke-width: 1; }
+.mapa-wschod .wl-wyspa { fill: var(--mapa-lad); stroke: var(--mapa-brzeg); stroke-width: 1; }
+.mapa-wschod .wl-kraina.k-roz { fill: var(--mapa-roz); }
+.mapa-wschod .wl-kraina.k-pom { fill: var(--mapa-pom); }
+.mapa-wschod .wl-kraina.k-pom2 { fill: var(--mapa-pom2); }
+.mapa-wschod .wl-kropka { fill: var(--mapa-uprawy); }
+.mapa-wschod .wl-rzeka { fill: none; stroke: var(--lapis); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.mapa-wschod .wl-rzeka-hit { fill: none; stroke: transparent; stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; }
+.mapa-wschod .wl-miasto { fill: var(--tusz); stroke: var(--mapa-lad); stroke-width: 1.5; }
+.mapa-wschod .wl-miasto.sumer { fill: var(--zle); }
+.mapa-wschod .wl-piramida { fill: var(--braz); stroke: var(--tusz); stroke-width: 1.2; }
+.mapa-wschod .wl-palma { fill: none; stroke: var(--mapa-uprawy); stroke-width: 1.6; stroke-linecap: round; }
+.mapa-wschod .wl-hit { fill: transparent; }
+.mapa-wschod text { pointer-events: none; }
+.mapa-wschod .klik text { pointer-events: auto; }
+.mapa-wschod .wl-nazwa-miasta { font: 600 13px/1 var(--font-tekst); fill: var(--tusz); paint-order: stroke; stroke: var(--mapa-lad); stroke-width: 3.5px; stroke-linejoin: round; }
+.mapa-wschod .wl-nazwa-morza { font: italic 500 14px/1 var(--font-tekst); fill: var(--lapis); letter-spacing: .03em; }
+.mapa-wschod .wl-nazwa-rzeki { font: italic 600 14px/1 var(--font-tekst); fill: var(--lapis); paint-order: stroke; stroke: var(--mapa-lad); stroke-width: 3.5px; stroke-linejoin: round; }
+.mapa-wschod .wl-nazwa-kraj { font: 700 15px/1 var(--font-tytul); fill: var(--tusz-2); letter-spacing: .2em; paint-order: stroke; stroke: var(--mapa-lad); stroke-width: 3px; stroke-linejoin: round; }
+.mapa-wschod .wl-nazwa-kraina { font: 600 12px/1 var(--font-tekst); fill: var(--tusz-2); letter-spacing: .06em; paint-order: stroke; stroke: var(--mapa-lad); stroke-width: 3px; stroke-linejoin: round; }
+.mapa-wschod .wl-nazwa-wyspy { font: 500 12px/1 var(--font-tekst); fill: var(--tusz-2); }
+.mapa-wschod .wl-numer circle { fill: var(--tusz); stroke: var(--mapa-lad); stroke-width: 2; }
+.mapa-wschod .wl-numer text { font: 700 13px/1 var(--font-tekst); fill: var(--mapa-lad); }
+.mapa-wschod .wl-ramka { fill: var(--karta); stroke: var(--tusz-2); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.mapa-wschod .wl-wst-tlo { fill: var(--lapis-tlo); stroke: var(--tusz-3); stroke-width: 1; }
+.mapa-wschod .wl-wst-lad { fill: var(--mapa-lad); stroke: var(--tusz-3); stroke-width: .6; }
+.mapa-wschod .wl-wst-ramka { fill: none; stroke: var(--zle); stroke-width: 2; }
+.mapa-wschod .wl-wst-napis { font: 600 9px/1 var(--font-tekst); fill: var(--tusz-2); letter-spacing: .06em; }
+.mapa-wschod .wl-podzialka path { fill: none; stroke: var(--tusz); stroke-width: 2; }
+.mapa-wschod .wl-podzialka-t { font: 500 12px/1 var(--font-tekst); fill: var(--tusz-2); }
+.mapa-wschod .klik { cursor: pointer; }
+.mapa-wschod .klik:focus-visible { outline: none; }
+.mapa-wschod path.wl-morze.klik:hover, .mapa-wschod path.wl-morze.klik.wybrany { fill: var(--braz-tlo); }
+.mapa-wschod path.wl-morze.klik.dobry { fill: var(--ok-tlo); stroke: var(--ok); stroke-width: 3; }
+.mapa-wschod path.wl-morze.klik.zly { fill: var(--zle-tlo); stroke: var(--zle); stroke-width: 3; }
+.mapa-wschod .wl-rzeka-g.klik:hover .wl-rzeka, .mapa-wschod .wl-rzeka-g.klik:focus-visible .wl-rzeka, .mapa-wschod .wl-rzeka-g.wybrany .wl-rzeka { stroke: var(--braz); stroke-width: 5; }
+.mapa-wschod .wl-rzeka-g.dobry .wl-rzeka { stroke: var(--ok); stroke-width: 6; }
+.mapa-wschod .wl-rzeka-g.zly .wl-rzeka { stroke: var(--zle); stroke-width: 6; }
+.mapa-wschod .wl-miasto-g.klik:hover .wl-miasto, .mapa-wschod .wl-miasto-g.klik:focus-visible .wl-miasto, .mapa-wschod .wl-miasto-g.wybrany .wl-miasto { stroke: var(--braz); stroke-width: 5; }
+.mapa-wschod .wl-miasto-g.dobry .wl-miasto { fill: var(--ok); stroke: var(--ok-tlo); stroke-width: 6; }
+.mapa-wschod .wl-miasto-g.zly .wl-miasto { fill: var(--zle); stroke: var(--zle-tlo); stroke-width: 6; }
+.mapa-wschod .wl-miasto-g.dobry .wl-nazwa-miasta, .mapa-wschod .wl-miasto-g.dobry .wl-numer circle { fill: var(--ok); }
+.mapa-wschod .wl-miasto-g.zly .wl-nazwa-miasta, .mapa-wschod .wl-miasto-g.zly .wl-numer circle { fill: var(--zle); }
+
+/* otwarte */
+.pole-odpowiedzi { width: 100%; min-height: 110px; font: inherit; padding: 12px; border-radius: var(--r); border: 2px solid var(--linia); background: var(--karta-2); color: var(--tusz); resize: vertical; }
+.wzor { padding: 14px; border-radius: var(--r); background: var(--lapis-tlo); display: grid; gap: 8px; }
+.wzor-tytul { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--lapis); }
+.punkty-lista { display: grid; gap: 8px; }
+.punkty-lista label { display: flex; gap: 12px; align-items: center; min-height: 52px; padding: 8px 12px; border-radius: 12px; background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); cursor: pointer; }
+.punkty-lista input { width: 26px; height: 26px; flex: none; accent-color: var(--ok); }
+
+/* krzyżówka */
+.krzyzowka-wrap { overflow-x: auto; }
+.krzyzowka { display: grid; gap: 6px; justify-content: start; }
+.kw-wiersz { display: flex; align-items: center; gap: 3px; cursor: pointer; }
+.kw-nr { width: 26px; font: 700 14px/1 var(--font-tytul); color: var(--tusz-3); text-align: right; margin-right: 6px; flex: none; }
+.kratka { width: 38px; height: 38px; flex: none; display: grid; place-items: center; font: 800 20px/1 var(--font-tytul); background: var(--karta); box-shadow: inset 0 0 0 2px var(--linia); border-radius: 6px; text-transform: uppercase; }
+.kratka.pusta { visibility: hidden; }
+.kratka.haslo { background: var(--braz-tlo); box-shadow: inset 0 0 0 2px var(--braz); }
+.kw-wiersz.aktywny .kratka:not(.pusta) { box-shadow: inset 0 0 0 3px var(--lapis); }
+.kw-wiersz.dobra .kratka:not(.pusta) { background: var(--ok-tlo); }
+.kw-wiersz.zla .kratka:not(.pusta) { background: var(--zle-tlo); }
+.kw-pytanie { padding: 12px 14px; border-radius: var(--r); background: var(--lapis-tlo); font-weight: 500; }
+.klawiatura-liter { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 6px; }
+.klawiatura-liter button { height: 48px; border: 0; border-radius: 10px; background: var(--karta); box-shadow: inset 0 0 0 2px var(--linia); font: 700 19px/1 var(--font-tytul); cursor: pointer; }
+.klawiatura-liter button.szeroki { grid-column: span 2; font-size: 15px; font-family: var(--font-tekst); }
+
+/* fiszka */
+.fiszka { perspective: 1200px; min-height: 230px; cursor: pointer; }
+.fiszka-srodek { position: relative; min-height: 230px; transition: transform .5s; transform-style: preserve-3d; }
+.fiszka.odwrocona .fiszka-srodek { transform: rotateY(180deg); }
+.fiszka-strona { position: absolute; inset: 0; display: grid; place-items: center; gap: 8px; padding: 20px; text-align: center; border-radius: var(--r-duzy); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.fiszka-przod { background: var(--lapis); color: var(--na-lapis); font: 800 30px/1.2 var(--font-tytul); }
+.fiszka-tyl { background: var(--karta-2); box-shadow: inset 0 0 0 2px var(--linia); transform: rotateY(180deg); font-size: 20px; font-weight: 500; }
+
+/* ----- dolny pasek i werdykt ----- */
+.sesja-dol {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--tlo); box-shadow: 0 -1px 0 var(--linia);
+}
+.sesja-dol-srodek { max-width: 900px; margin: 0 auto; display: flex; gap: 10px; }
+.sesja-dol-srodek .btn-glowny { flex: 1; }
+.werdykt {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  padding: 18px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  border-radius: 22px 22px 0 0; box-shadow: 0 -8px 30px rgba(0, 0, 0, .18);
+  animation: wysun .28s cubic-bezier(.2, .9, .3, 1.2);
+  max-height: 70vh; overflow-y: auto;
+}
+@keyframes wysun { from { transform: translateY(100%); } to { transform: none; } }
+.werdykt-srodek { max-width: 900px; margin: 0 auto; display: grid; gap: 10px; }
+.werdykt-ok { background: var(--ok-tlo); }
+.werdykt-zle { background: var(--zle-tlo); }
+.werdykt-pol { background: var(--braz-tlo); }
+.werdykt-tytul { display: flex; align-items: center; gap: 10px; font: 800 26px/1.1 var(--font-tytul); }
+.werdykt-ok .werdykt-tytul { color: var(--ok); }
+.werdykt-zle .werdykt-tytul { color: var(--zle); }
+.werdykt-pol .werdykt-tytul { color: var(--braz); }
+.werdykt-tytul svg { width: 32px; height: 32px; }
+.werdykt-tytul .xp { margin-left: auto; font-size: 18px; color: var(--braz); }
+.werdykt-poprawna { font-weight: 600; }
+.werdykt-wyjasnienie { font-size: 17px; }
+.werdykt-zrodlo { font-size: 13px; color: var(--tusz-2); }
+.werdykt-przyciski { display: flex; gap: 10px; margin-top: 4px; }
+.werdykt-przyciski .btn-glowny { flex: 1; }
+
+/* ----- podsumowanie ----- */
+.podsumowanie { display: grid; gap: 18px; justify-items: center; text-align: center; padding-top: 16px; }
+.gwiazdki { display: flex; gap: 10px; }
+.gwiazdki svg { width: 64px; height: 64px; color: var(--linia); }
+.gwiazdki svg.zdobyta { color: var(--braz); animation: gwiazda .5s cubic-bezier(.2, .9, .3, 1.4) both; }
+.gwiazdki svg.zdobyta:nth-child(2) { animation-delay: .25s; }
+.gwiazdki svg.zdobyta:nth-child(3) { animation-delay: .5s; }
+@keyframes gwiazda { from { transform: scale(0) rotate(-40deg); } to { transform: none; } }
+.wynik-liczba { font: 800 56px/1 var(--font-tytul); color: var(--lapis); font-variant-numeric: tabular-nums; }
+.wynik-opis { color: var(--tusz-2); }
+.statystyki { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.statystyka { background: var(--karta); border-radius: var(--r); padding: 12px; display: grid; gap: 2px; }
+.statystyka b { font: 800 26px/1 var(--font-tytul); font-variant-numeric: tabular-nums; }
+.statystyka span { font-size: 13px; color: var(--tusz-2); }
+.bledy-lista { display: grid; gap: 10px; width: 100%; text-align: left; }
+.blad { background: var(--karta); border-radius: var(--r); padding: 14px; display: grid; gap: 6px; box-shadow: inset 4px 0 0 var(--zle); }
+.blad-pytanie { font-weight: 600; }
+.blad-odp { font-size: 15px; color: var(--ok); font-weight: 600; }
+.blad-wyj { font-size: 15px; color: var(--tusz-2); }
+.przyciski-koniec { display: grid; gap: 10px; width: 100%; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.postep-rundy { display: grid; gap: 4px; width: 100%; padding: 12px 14px; border-radius: var(--r); background: var(--karta); text-align: left; font-size: 15px; }
+
+/* ----- efekty ----- */
+.potrzasnij { animation: potrzasnij .42s ease; }
+@keyframes potrzasnij { 20% { transform: translateX(-10px); } 40% { transform: translateX(9px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(4px); } }
+.blysk { animation: blysk .45s ease; }
+@keyframes blysk { 30% { transform: scale(1.03); box-shadow: 0 0 0 6px var(--ok-tlo), var(--cien); } }
+.xp-plus { position: fixed; z-index: 90; pointer-events: none; font: 800 26px/1 var(--font-tytul); color: var(--braz); text-shadow: 0 2px 0 var(--karta); animation: xp 1.1s ease-out forwards; }
+@keyframes xp { from { opacity: 0; transform: translateY(10px) scale(.8); } 20% { opacity: 1; transform: translateY(0) scale(1.1); } to { opacity: 0; transform: translateY(-70px); } }
+.nowa-ranga { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; background: rgba(10, 16, 26, .55); animation: wejscie .3s; }
+.nowa-ranga-karta { background: var(--karta); border-radius: 24px; padding: 28px; display: grid; gap: 10px; justify-items: center; text-align: center; max-width: 320px; animation: gwiazda .5s cubic-bezier(.2, .9, .3, 1.3); }
+.nowa-ranga-karta .herb { width: 96px; height: 96px; }
+
+@media (max-width: 520px) {
+  .pytanie { font-size: 21px; }
+  .zadanie { padding: 16px; }
+  .opcje-2 { grid-template-columns: 1fr; }
+  .pary { gap: 8px; }
+  .tekst-luki { font-size: 18px; }
+  .statystyki { grid-template-columns: 1fr 1fr 1fr; }
+  .gwiazdki svg { width: 52px; height: 52px; }
+}

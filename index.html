@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2352A8">
+  <title>Historia z Mikołajem</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Lexend:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="app/styl.css">
+  <link rel="stylesheet" href="app/styl-zadania.css">
+</head>
+<body>
+  <div id="app" aria-live="polite"></div>
+  <canvas id="konfetti" aria-hidden="true"></canvas>
+
+  <!-- rdzeń -->
+  <script src="app/rdzen.js"></script>
+  <script src="app/mowa.js"></script>
+  <script src="app/oprawa.js"></script>
+  <script src="app/ikony.js"></script>
+  <script src="app/postepy.js"></script>
+  <script src="app/generator.js"></script>
+  <script src="app/mapa.js"></script>
+  <!-- typy zadań -->
+  <script src="app/zadania-1.js"></script>
+  <script src="app/zadania-2.js"></script>
+  <script src="app/zadania-3.js"></script>
+  <!-- przebieg i ekrany -->
+  <script src="app/sesja.js"></script>
+  <script src="app/ekrany-start.js"></script>
+  <script src="app/ekrany-inne.js"></script>
+  <!-- dane: spis ładuje pliki tematów, potem start -->
+  <script src="app/start.js"></script>
+  <script src="tematy/spis.js"></script>
+</body>
+</html>
